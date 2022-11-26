@@ -35,12 +35,15 @@ def parse_config(argv=None):
                                       prog='SMPLifyX')
 
     parser.add_argument('--data_folder',
-                        default=os.getcwd(),
+                        # default=os.getcwd(),
+                        default="data_folder",
                         help='The directory that contains the data.')
     parser.add_argument('--max_persons', type=int, default=3,
                         help='The maximum number of persons to process')
     parser.add_argument('-c', '--config',
-                        required=True, is_config_file=True,
+                        # required=True, 
+                        default='cfg_files/fit_smplx.yaml',
+                        is_config_file=True,
                         help='config file path')
     parser.add_argument('--loss_type', default='smplify', type=str,
                         help='The type of loss to use')
@@ -70,7 +73,7 @@ def parse_config(argv=None):
                         nargs='*',
                         help='Indices of joints to be ignored')
     parser.add_argument('--output_folder',
-                        default='output',
+                        default='output_folder',
                         type=str,
                         help='The folder where the output is stored')
     parser.add_argument('--img_folder', type=str, default='images',
@@ -157,10 +160,10 @@ def parse_config(argv=None):
                         help='The type of prior that will be used to' +
                         ' regularize the optimization of the pose of the' +
                         ' jaw.')
-    parser.add_argument('--use_vposer', default=False,
+    parser.add_argument('--use_vposer', default=True,
                         type=lambda arg: arg.lower() in ['true', '1'],
                         help='Use the VAE pose embedding')
-    parser.add_argument('--vposer_ckpt', type=str, default='',
+    parser.add_argument('--vposer_ckpt', type=str, default='smplifyx/vposer',
                         help='The path to the V-Poser checkpoint')
     # Left/Right shoulder and hips
     parser.add_argument('--init_joints_idxs', nargs='*', type=int,

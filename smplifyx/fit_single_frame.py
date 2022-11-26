@@ -44,7 +44,7 @@ from optimizers import optim_factory
 
 import fitting
 # from human_body_prior.tools.model_loader import load_vposer
-from vposer.human_body_prior.src.human_body_prior.tools.model_loader import load_model
+from vposer.human_body_prior.human_body_prior.tools.model_loader import load_vposer
 
 def fit_single_frame(img,
                      keypoints,
@@ -75,7 +75,7 @@ def fit_single_frame(img,
                      hand_joints_weights=None,
                      face_joints_weights=None,
                      depth_loss_weight=1e2,
-                     interpenetration=True,
+                     interpenetration=False,
                      coll_loss_weights=None,
                      df_cone_height=0.5,
                      penalize_outside=True,
@@ -185,7 +185,8 @@ def fit_single_frame(img,
                                      requires_grad=True)
 
         vposer_ckpt = osp.expandvars(vposer_ckpt)
-        vposer, _ = load_model(vposer_ckpt, vp_model='snapshot')
+        print('Chekcpoint', vposer_ckpt)
+        vposer, _ = load_vposer(vposer_ckpt, vp_model='snapshot')
         vposer = vposer.to(device=device)
         vposer.eval()
 
@@ -209,7 +210,8 @@ def fit_single_frame(img,
     search_tree = None
     pen_distance = None
     filter_faces = None
-    if interpenetration:
+    #TODO : Change false to interpenetraion when mesh_intersectoin module is successfully installed.
+    if False:
         from mesh_intersection.bvh_search_tree import BVH
         import mesh_intersection.loss as collisions_loss
         from mesh_intersection.filter_faces import FilterFaces

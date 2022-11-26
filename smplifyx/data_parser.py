@@ -42,7 +42,7 @@ Keypoints = namedtuple('Keypoints',
 Keypoints.__new__.__defaults__ = (None,) * len(Keypoints._fields)
 
 
-def create_dataset(dataset='openpose', data_folder='data', **kwargs):
+def create_dataset(dataset='openpose', data_folder='data_folder', **kwargs):
     if dataset.lower() == 'openpose':
         return OpenPose(data_folder, **kwargs)
     else:
