@@ -38,6 +38,7 @@ from fit_single_frame import fit_single_frame
 from camera import create_camera
 from prior import create_prior
 
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 torch.backends.cudnn.enabled = False
 
 
@@ -80,8 +81,9 @@ def main(**args):
         print('CUDA is not available, exiting!')
         sys.exit(-1)
 
+    data_folder = args.pop('data_folder', 'data_folder')
     img_folder = args.pop('img_folder', 'images')
-    dataset_obj = create_dataset(img_folder=img_folder, **args)
+    dataset_obj = create_dataset(data_folder=data_folder, img_folder=img_folder, **args)
 
     start = time.time()
 
