@@ -28,8 +28,9 @@ if __name__ == '__main__':
         openpose_image_dir = os.path.join(OPENPOSE_IMAGES_DIR, video_name)
         os.makedirs(openpose_keypoint_dir, exist_ok=True)
         os.makedirs(openpose_image_dir, exist_ok=True)
-
-        if len(os.listdir(openpose_keypoint_dir)) == 0:
+        
+        # If already done, skip.
+        if len(os.listdir(openpose_keypoint_dir)) != 0:
             continue
 
         # If you want to use hands and face tracking features, append '--hands --face' in command.

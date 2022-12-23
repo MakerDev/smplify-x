@@ -6,10 +6,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+data_folder
+output_folder*
 # C extensions
 *.so
-
+openpose
+smplifyx/vposer
+models
 # Distribution / packaging
 .Python
 build/
