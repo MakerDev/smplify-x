@@ -51,19 +51,21 @@ class MeshViewer(object):
         camera_pose[:3, 3] = np.array([0, 0, 3])
         self.scene.add(pc, pose=camera_pose)
 
-        self.viewer = pyrender.Viewer(self.scene, use_raymond_lighting=True,
-                                      viewport_size=(width, height),
-                                      cull_faces=False,
-                                      run_in_thread=True,
-                                      registered_keys=registered_keys)
+        # self.viewer = pyrender.Viewer(self.scene, use_raymond_lighting=True,
+        #                               viewport_size=(width, height),
+        #                               cull_faces=False,
+        #                               run_in_thread=True,
+        #                               registered_keys=registered_keys)
 
+    # Only render_results.py uses this function
     def is_active(self):
-        return self.viewer.is_active
+        # return self.viewer.is_active
+        return False
 
     def close_viewer(self):
-        if self.viewer.is_active:
+        if self.is_active():
             self.viewer.close_external()
-
+        
     def create_mesh(self, vertices, faces, color=(0.3, 0.3, 0.3, 1.0),
                     wireframe=False):
 
@@ -80,10 +82,10 @@ class MeshViewer(object):
         return self.trimesh_to_pymesh(mesh, material=material)
 
     def update_mesh(self, vertices, faces):
-        if not self.viewer.is_active:
-            return
+        # if not self.viewer.is_active:
+        #     return
 
-        self.viewer.render_lock.acquire()
+        # self.viewer.render_lock.acquire()
 
         for node in self.scene.get_nodes():
             if node.name == 'body_mesh':
@@ -94,4 +96,4 @@ class MeshViewer(object):
             vertices, faces, color=self.body_color)
         self.scene.add(body_mesh, name='body_mesh')
 
-        self.viewer.render_lock.release()
+        # self.viewer.render_lock.release()

@@ -45,6 +45,36 @@ from optimizers import optim_factory
 import fitting
 # from human_body_prior.tools.model_loader import load_vposer
 from vposer.human_body_prior.human_body_prior.tools.model_loader import load_vposer
+from pyrender.node import Node
+from pyrender.light import DirectionalLight
+
+def create_raymond_lights():
+    thetas = np.pi * np.array([1.0 / 6.0, 1.0 / 6.0, 1.0 / 6.0])
+    phis = np.pi * np.array([0.0, 2.0 / 3.0, 4.0 / 3.0])
+
+    nodes = []
+
+    for phi, theta in zip(phis, thetas):
+        xp = np.sin(theta) * np.cos(phi)
+        yp = np.sin(theta) * np.sin(phi)
+        zp = np.cos(theta)
+
+        z = np.array([xp, yp, zp])
+        z = z / np.linalg.norm(z)
+        x = np.array([-z[1], z[0], 0.0])
+        if np.linalg.norm(x) == 0:
+            x = np.array([1.0, 0.0, 0.0])
+        x = x / np.linalg.norm(x)
+        y = np.cross(z, x)
+
+        matrix = np.eye(4)
+        matrix[:3,:3] = np.c_[x,y,z]
+        nodes.append(Node(
+            light=DirectionalLight(color=np.ones(3), intensity=1.0),
+            matrix=matrix
+        ))
+
+    return nodes
 
 def fit_single_frame(img,
                      keypoints,
@@ -508,6 +538,7 @@ def fit_single_frame(img,
         out_mesh.apply_transform(rot)
         out_mesh.export(mesh_fn)
 
+    # TODO: Set this back from "True" to "visualize"
     if visualize:
         import pyrender
 
@@ -538,7 +569,10 @@ def fit_single_frame(img,
         scene.add(camera, pose=camera_pose)
 
         # Get the lights from the viewer
-        light_nodes = monitor.mv.viewer._create_raymond_lights()
+        # TODO: uncommand this when opengl problem is fixed.
+        # Fixed wglChoosePixelFormatARB is not exported by only extracting create_raymond_lights 
+        # while it doesn't require any class member variables
+        light_nodes = create_raymond_lights()
         for node in light_nodes:
             scene.add_node(node)
 
