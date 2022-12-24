@@ -41,7 +41,7 @@ from prior import create_prior
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 torch.backends.cudnn.enabled = False
 
-
+#TODO: Parallelize this with ThreadPool
 def main(**args):
     output_folder = args.pop('output_folder')
     output_folder = osp.expandvars(output_folder)
@@ -269,6 +269,6 @@ def main(**args):
     print('Processing the data took: {}'.format(time_msg))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     args = parse_config()
     main(**args)

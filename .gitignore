@@ -1,13 +1,13 @@
 #### joe made this: http://goel.io/joe
-
+data_folder
+output_folder*
+temp*
 #####=== Python ===#####
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-data_folder
-output_folder*
 # C extensions
 *.so
 openpose
